@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Prendre rendez-vous</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 30px;
+      background-color: #f9f9f9;
+    }
+    form {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      max-width: 500px;
+      margin: auto;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px 20px;
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #219150;
+    }
+  </style>
+</head>
+<body>
+
+  <form id="step1" onsubmit="showStep2(event)">
+    <h2>Faisons connaissance</h2>
+    <label for="prenom">Prénom</label>
+    <input type="text" id="prenom" required placeholder="Ex : Sophie">
+
+    <label for="email">Email</label>
+    <input type="email" id="email" required placeholder="Ex : sophie@email.com">
+
+    <label for="telephone">Téléphone</label>
+    <input type="tel" id="telephone" required placeholder="Ex : 50938533656">
+
+    <button type="submit">Suivant →</button>
+  </form>
+
+  <form id="step2" style="display:none;" onsubmit="sendToWhatsApp(event)">
+    <h2>Fixons votre rendez-vous</h2>
+
+    <label for="moment">Meilleur moment pour vous appeler</label>
+    <select id="moment">
+      <option>Matin</option>
+      <option>Après-midi</option>
+      <option>Soirée</option>
+    </select>
+
+    <label>Préférez-vous :</label>
+    <input type="radio" name="contact" value="Appel téléphonique" checked> Appel<br>
+    <input type="radio" name="contact" value="Message WhatsApp"> WhatsApp<br>
+    <input type="radio" name="contact" value="Email"> Email<br>
+
+    <label>Un petit mot ? (optionnel)</label>
+    <textarea id="message" placeholder="Ex : Je suis dispo plutôt en fin de journée..."></textarea>
+
+    <button type="submit">Confirmer le rendez-vous</button>
+  </form>
+
+  <script>
+    function showStep2(e) {
+      e.preventDefault();
+      document.getElementById("step1").style.display = "none";
+      document.getElementById("step2").style.display = "block";
+    }
+
+    function sendToWhatsApp(e) {
+      e.preventDefault();
+      const prenom = document.getElementById("prenom").value;
+      const email = document.getElementById("email").value;
+      const telephone = document.getElementById("telephone").value;
+      const moment = document.getElementById("moment").value;
+      const contact = document.querySelector('input[name="contact"]:checked').value;
+      const message = document.getElementById("message").value;
+
+      const text = `Bonjour ! Je m'appelle ${prenom}.
+Email : ${email}
+Téléphone : ${telephone}
+Moment préféré : ${moment}
+Contact souhaité : ${contact}
+Message : ${message ? message : '—'}`;
+
+      const whatsappURL = "https://wa.me/50938533656?text=" + encodeURIComponent(text);
+      window.open(whatsappURL, '_blank');
+    }
+  </script>
+
+</body>
+</html>
